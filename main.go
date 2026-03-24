@@ -1,6 +1,9 @@
 package main
 
 import (
+	"PizzaApi/Controller"
+	"PizzaApi/Service"
+
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -10,5 +13,10 @@ func main() {
 	if err != nil {
 		return
 	}
+	service := Service.NewPizzaService()
+	controller := Controller.Controller(service)
+	pizzas := app.Group("/pizzas")
+
+	pizzas.Get("/", controller.PizzaController)
 
 }
