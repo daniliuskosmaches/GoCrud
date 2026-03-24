@@ -14,6 +14,6 @@ func NewPizzaController(controller *Service.PizzaService) *Controller {
 }
 
 func (pc *NewPizzaController) PizzaController(c *fiber.Ctx) {
-	result := pc.PizzaService.PizzaService()
+	result := pc.
 
 }
