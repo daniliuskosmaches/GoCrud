@@ -2,6 +2,8 @@ package main
 
 import (
 	"PizzaApi/Controller"
+	"PizzaApi/Entity"
+	"PizzaApi/Repository"
 	"PizzaApi/Service"
 
 	"github.com/gofiber/fiber/v3"
@@ -13,10 +15,17 @@ func main() {
 	if err != nil {
 		return
 	}
-	service := Service.NewPizzaService()
-	controller := Controller.Controller(service)
-	pizzas := app.Group("/pizzas")
+	db := Entity.InitDatabase()
+	repository := Repository.NewRepository(db)
+	service := Service.NewService(repository)
+	controller := Controller.NewController(service)
+	app.Post("reviews", controller.PostReviews)
 
-	pizzas.Get("/", controller.PizzaController)
+	app.Get("/pizzas", controller.GetPizzas)
+	app.Get("/ingredients", controller.GetIngredients)
+	app.Get("/restaurants", controller.GetRestaurants)
+	app.Get("/chefs", controller.GetChefs)
+	app.Get("/orders", controller.GetOrders)
+	app.Get("/reviews", controller.GetReviews)
 
 }

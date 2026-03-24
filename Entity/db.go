@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func initDatabase() *gorm.DB {
+func InitDatabase() *gorm.DB {
 
 	err := godotenv.Load()
 	if err != nil {

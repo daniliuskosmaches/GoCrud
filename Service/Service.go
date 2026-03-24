@@ -1,28 +1,33 @@
 package Service
 
-type PizzaService struct {
+import (
+	"PizzaApi/Repository"
+)
+
+type Service struct {
+	repository *Repository.Repository
 }
 
-func NewPizzaService() *PizzaService {
-	return &PizzaService{}
+func NewService(repository *Repository.Repository) *Service {
+	return &Service{repository: repository}
 }
 
-func (s *PizzaService) PizzaService() {
+func (s *Service) PizzaService() {
 
 }
-func (s *PizzaService) IngriService() {
+func (s *Service) IngriService() {
 
 }
 
-func (s *PizzaService) ReviewService() {
+func (s *Service) ReviewService() {
 
 }
-func (s *PizzaService) RestaurantService() {
+func (s *Service) RestaurantService() {
 
 }
-func (s *PizzaService) ChefService() {
+func (s *Service) ChefService() {
 
 }
-func (s *PizzaService) OrderService() {
+func (s *Service) OrderService() {
 
 }
