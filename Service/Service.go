@@ -22,6 +22,12 @@ func (s *Service) PizzaService(pizzas *[]Entity.Pizza) {
 	s.repository.PizzaRepository(pizzas)
 
 }
+func (s *Service) RestaurantService(rest *Entity.Restaurant) {
+	if rest == nil {
+		log.Println("rest is nil")
+	}
+	s.repository.RestaurantRepository(rest)
+}
 
 func (s *Service) ReviewService(review *Entity.Review) {
 	if review == nil {
@@ -31,22 +37,23 @@ func (s *Service) ReviewService(review *Entity.Review) {
 	s.repository.ReviewFindRepository(review)
 
 }
-func (s *Service) MenuService(name func[T any](data []byte) (Entity.Restaurant, error)) (string error, err error) {
-	var cleaname = strings.TrimSpace(name)
-	s.repository.MenuRepository(cleaname)
-
-	if cleaname == "" {
-		return nil, err
+func (s *Service) MenuService(menu string, name string) (string error) {
+	if menu == "" {
+		log.Println("menu is nil")
 	}
 
-	return nil, err
+	cleaname := strings.TrimSpace(name)
+	s.repository.MenuRepository(cleaname)
+
+	return
 }
-func (s *Service) IngredientService(ingridient func[T any](data []byte) ([]Entity.Pizza, error)) {
+func (s *Service) IngredientService(ingridient *Entity.Ingredient) error {
 	if ingridient == nil {
 		log.Println("ingridient is nil")
 	}
 	s.repository.IngredientRepository(ingridient)
 
+	return nil
 }
 func (s *Service) ChefService(chef *Entity.Chef) {
 	if chef == nil {

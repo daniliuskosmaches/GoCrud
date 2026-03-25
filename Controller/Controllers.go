@@ -37,14 +37,35 @@ func (s Controller) GetPizzas(r *http.Request, w http.ResponseWriter) {
 	s.Service.PizzaService(&pizzas)
 
 }
-func (s Controller) GetIngredients(r *http.Request, w http.ResponseWriter) {
-	ingridients := utils.ParseJson[[]Entity.Pizza]
-	if ingridients == nil {
+func (s Controller) GetIngredients(w http.ResponseWriter) {
+	ingridient, err := utils.ParseJson[Entity.Ingredient](s.request)
+
+	if err != nil {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
+	}
+
+	err = s.Service.IngredientService(&ingridient)
+	if err != nil {
 		return
 	}
 
-	s.Service.IngredientService(ingridients)
+}
+
+func (s Controller) GetRestaraunt(w http.ResponseWriter) error {
+	rest, err := utils.ParseJson[Entity.Restaurant](s.request)
+	if err != nil {
+		http.Error(w, "invalid Json", http.StatusInternalServerError)
+	}
+	s.Service.RestaurantService(&rest)
+	if err != nil {
+		return err
+	}
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(rest)
+	if err != nil {
+		return err
+	}
+	return nil
 
 }
 
@@ -53,10 +74,17 @@ func (s Controller) GetChefs(r *http.Request, w http.ResponseWriter) {
 }
 
 func (s Controller) GetReviews(r *http.Request, w http.ResponseWriter) {
-	getReviews := utils.ParseJson[Entity.Review]
-	if getReviews = nil {
+	getReviews, err := utils.ParseJson[Entity.Review](s.request)
+	if err != nil {
+		http.Error(w, "invalid Json", http.StatusInternalServerError)
+	}
 
-		log.Println("getReviews is nil")
+	s.Service.ReviewService(&getReviews)
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(getReviews)
+	if err != nil {
+		return
 	}
 
 }
@@ -77,18 +105,23 @@ func (s Controller) PostReviews(r *http.Request, w http.ResponseWriter) {
 	return
 }
 func (s Controller) GetRestrauntsMenu(r *http.Request, w http.ResponseWriter) {
-	Restaurant := utils.ParseJson[Entity.Restaurant]
-	if Restaurant == nil {
+	Restaurant, err := utils.ParseJson[Entity.Restaurant](s.request)
+	var name string
+	var menu string
+	if err != nil {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
 	}
-	menu, err := s.Service.MenuService(Restaurant)
+	name = Restaurant.Name
+	menu = Restaurant.Menu
+	err = s.Service.MenuService(name, menu)
+
 	if err != nil {
 		log.Printf("Error: %v", err)
 		http.Error(w, "Restaurant not found", http.StatusNotFound)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(map[string]string{
+	err = json.NewEncoder(w).Encode(map[string]string{
 		"restaurant": name,
 		"menu":       menu,
 	})

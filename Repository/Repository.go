@@ -25,8 +25,8 @@ func (r *Repository) PizzaRepository(pizzas *[]Entity.Pizza) {
 
 }
 
-func (r *Repository) IngredientRepository(db *gorm.DB) {
-	result := db.Find(&[]Entity.Ingredient{})
+func (r *Repository) IngredientRepository(ingridient *Entity.Ingredient) {
+	result := r.db.Find(ingridient)
 	if result != nil {
 		log.Fatal("result is null")
 	}
@@ -58,7 +58,7 @@ func (r *Repository) RestaurantRepository(rest *Entity.Restaurant) {
 	log.Println(result)
 
 }
-func (r *Repository) ChefRepository(chef *[]Entity.Chef) {
+func (r *Repository) ChefRepository(chef *Entity.Chef) {
 	result := r.db.Find(chef)
 	if result != nil {
 		log.Fatal("result is null")

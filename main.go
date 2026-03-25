@@ -28,7 +28,7 @@ func main() {
 	app.Get("/ingredients", controller.GetIngredients)
 	app.Get("/chefs", controller.GetChefs)
 
-	restraunts.Get("/", controller.GetRestraunts)
+	restraunts.Get("/", controller.GetRestaraunt)
 	restraunts.Get("id:/menu", controller.GetRestrauntsMenu)
 	reviews.Get("/", controller.GetReviews)
 	reviews.Post("/", controller.PostReviews)
