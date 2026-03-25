@@ -4,7 +4,9 @@ import (
 	"PizzaApi/Entity"
 	"PizzaApi/Service"
 	"PizzaApi/utils"
+	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -36,21 +38,31 @@ func (s Controller) GetPizzas(r *http.Request, w http.ResponseWriter) {
 
 }
 func (s Controller) GetIngredients(r *http.Request, w http.ResponseWriter) {
+	ingridients := utils.ParseJson[[]Entity.Pizza]
+	if ingridients == nil {
+		http.Error(w, "invalid Json", http.StatusInternalServerError)
+		return
+	}
 
-	s.Service.IngridientService()
+	s.Service.IngredientService(ingridients)
+
 }
+
+func (s Controller) GetChefs(r *http.Request, w http.ResponseWriter) {
+
+}
+
+func (s Controller) GetReviews(r *http.Request, w http.ResponseWriter) {
+	getReviews := utils.ParseJson[Entity.Review]
+	if getReviews = nil {
+
+		log.Println("getReviews is nil")
+	}
+
+}
+
 func (s Controller) GetRestaurants(r *http.Request, w http.ResponseWriter) {
 
-	s.Service.RestaurantService()
-}
-func (s Controller) GetChefs(r *http.Request, w http.ResponseWriter) {
-	s.Service.ChefService()
-}
-func (s Controller) GetOrders(r *http.Request, w http.ResponseWriter) {
-	s.Service.OrderService()
-}
-func (s Controller) GetReviews(r *http.Request, w http.ResponseWriter) {
-	s.Service.ReviewService()
 }
 
 // но здесь мы позволим юзеру оставить отзыв на сайте тобишь в базе данных
@@ -62,4 +74,26 @@ func (s Controller) PostReviews(r *http.Request, w http.ResponseWriter) {
 	}
 	review, _ := utils.ParseJson[Entity.Review](body)
 	s.Service.ReviewService(&review)
+	return
+}
+func (s Controller) GetRestrauntsMenu(r *http.Request, w http.ResponseWriter) {
+	Restaurant := utils.ParseJson[Entity.Restaurant]
+	if Restaurant == nil {
+		http.Error(w, "invalid Json", http.StatusInternalServerError)
+	}
+	menu, err := s.Service.MenuService(Restaurant)
+	if err != nil {
+		log.Printf("Error: %v", err)
+		http.Error(w, "Restaurant not found", http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(map[string]string{
+		"restaurant": name,
+		"menu":       menu,
+	})
+	if err != nil {
+		return
+	}
+
 }

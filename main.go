@@ -16,16 +16,21 @@ func main() {
 		return
 	}
 	db := Entity.InitDatabase()
+
 	repository := Repository.NewRepository(db)
 	service := Service.NewService(repository)
 	controller := Controller.NewController(service)
-	app.Post("reviews", controller.PostReviews)
+
+	restraunts := app.Group("/restaurants")
+	reviews := app.Group("reviews")
 
 	app.Get("/pizzas", controller.GetPizzas)
 	app.Get("/ingredients", controller.GetIngredients)
-	app.Get("/restaurants", controller.GetRestaurants)
 	app.Get("/chefs", controller.GetChefs)
-	app.Get("/orders", controller.GetOrders)
-	app.Get("/reviews", controller.GetReviews)
+
+	restraunts.Get("/", controller.GetRestraunts)
+	restraunts.Get("id:/menu", controller.GetRestrauntsMenu)
+	reviews.Get("/", controller.GetReviews)
+	reviews.Post("/", controller.PostReviews)
 
 }

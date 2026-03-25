@@ -8,6 +8,7 @@ type Restaurant struct {
 	gorm.Model
 	Name    string `gorm:"type:varchar(255);not null" json:"name"`
 	Address string `gorm:"type:varchar(255);not null" json:"address"`
+	Menu    string `gorm:"type:varchar(255);not null" json:"menu"`
 
 	Chef Chef `json:"chef"`
 

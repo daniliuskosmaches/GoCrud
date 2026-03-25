@@ -4,6 +4,7 @@ import (
 	"PizzaApi/Entity"
 	"PizzaApi/Repository"
 	"log"
+	"strings"
 )
 
 type Service struct {
@@ -21,9 +22,6 @@ func (s *Service) PizzaService(pizzas *[]Entity.Pizza) {
 	s.repository.PizzaRepository(pizzas)
 
 }
-func (s *Service) IngridientService() {
-
-}
 
 func (s *Service) ReviewService(review *Entity.Review) {
 	if review == nil {
@@ -33,15 +31,27 @@ func (s *Service) ReviewService(review *Entity.Review) {
 	s.repository.ReviewFindRepository(review)
 
 }
-func (s *Service) RestaurantService(entity *Entity.Restaurant) {
+func (s *Service) MenuService(name func[T any](data []byte) (Entity.Restaurant, error)) (string error, err error) {
+	var cleaname = strings.TrimSpace(name)
+	s.repository.MenuRepository(cleaname)
 
-}
-func (s *Service) ChefService(entity *Entity.Chef) {
-
-}
-func (s *Service) OrderService(repository *Repository.Repository) {
-	if repository == nil {
-		return
+	if cleaname == "" {
+		return nil, err
 	}
+
+	return nil, err
+}
+func (s *Service) IngredientService(ingridient func[T any](data []byte) ([]Entity.Pizza, error)) {
+	if ingridient == nil {
+		log.Println("ingridient is nil")
+	}
+	s.repository.IngredientRepository(ingridient)
+
+}
+func (s *Service) ChefService(chef *Entity.Chef) {
+	if chef == nil {
+		log.Println("chef is nil")
+	}
+	s.repository.ChefRepository(chef)
 
 }
