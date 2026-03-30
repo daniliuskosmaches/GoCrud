@@ -4,35 +4,10 @@ import (
 	"gorm.io/gorm"
 )
 
-type Restaurant struct {
-	gorm.Model
-	Name    string `gorm:"type:varchar(255);not null" json:"name"`
-	Address string `gorm:"type:varchar(255);not null" json:"address"`
-	Menu    string `gorm:"type:varchar(255);not null" json:"menu"`
-
-	Chef Chef `json:"chef"`
-
-	Pizzas []Pizza `gorm:"foreignKey:RestaurantID" json:"pizzas,omitempty"`
-
-	Reviews []Review `gorm:"foreignKey:RestaurantID" json:"reviews,omitempty"`
-}
-
 type Chef struct {
 	gorm.Model
 	Name         string `gorm:"type:varchar(255);not null" json:"name"`
 	RestaurantID uint   `json:"restaurant_id"`
-}
-
-type Pizza struct {
-	gorm.Model
-	Name             string `gorm:"type:varchar(255);not null" json:"name"`
-	CheeseType       string `gorm:"type:varchar(100)" json:"cheese_type"`
-	DoughThickness   string `gorm:"type:varchar(50)" json:"dough_thickness"`
-	SecretIngredient string `gorm:"type:varchar(255)" json:"secret_ingredient"`
-
-	RestaurantID uint `json:"restaurant_id"`
-
-	Ingredients []Ingredient `gorm:"many2many:pizza_ingredients;" json:"ingredients"`
 }
 
 type Ingredient struct {

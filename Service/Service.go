@@ -15,13 +15,6 @@ func NewService(repository *Repository.Repository) *Service {
 	return &Service{repository: repository}
 }
 
-func (s *Service) PizzaService(pizzas *[]Entity.Pizza) {
-	if pizzas == nil {
-		log.Println("pizzas is nil")
-	}
-	s.repository.PizzaRepository(pizzas)
-
-}
 func (s *Service) RestaurantService(rest *Entity.Restaurant) {
 	if rest == nil {
 		log.Println("rest is nil")

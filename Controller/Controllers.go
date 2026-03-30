@@ -3,7 +3,7 @@ package Controller
 import (
 	"PizzaApi/Entity"
 	"PizzaApi/Service"
-	"PizzaApi/utils"
+	"PizzaApi/pkg"
 	"encoding/json"
 	"io"
 	"log"
@@ -27,18 +27,8 @@ func NewController(service *Service.Service) *Controller {
 список всех ресторонов и пицц с ингридиентами
 */
 
-func (s Controller) GetPizzas(r *http.Request, w http.ResponseWriter) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "invalid Json", http.StatusInternalServerError)
-		return
-	}
-	pizzas, _ := utils.ParseJson[[]Entity.Pizza](body)
-	s.Service.PizzaService(&pizzas)
-
-}
 func (s Controller) GetIngredients(w http.ResponseWriter) {
-	ingridient, err := utils.ParseJson[Entity.Ingredient](s.request)
+	ingridient, err := pkg.ParseJson[Entity.Ingredient](s.request)
 
 	if err != nil {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
@@ -52,7 +42,7 @@ func (s Controller) GetIngredients(w http.ResponseWriter) {
 }
 
 func (s Controller) GetRestaraunt(w http.ResponseWriter) error {
-	rest, err := utils.ParseJson[Entity.Restaurant](s.request)
+	rest, err := pkg.ParseJson[Entity.Restaurant](s.request)
 	if err != nil {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
 	}
@@ -74,7 +64,7 @@ func (s Controller) GetChefs(r *http.Request, w http.ResponseWriter) {
 }
 
 func (s Controller) GetReviews(r *http.Request, w http.ResponseWriter) {
-	getReviews, err := utils.ParseJson[Entity.Review](s.request)
+	getReviews, err := pkg.ParseJson[Entity.Review](s.request)
 	if err != nil {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
 	}
@@ -100,12 +90,12 @@ func (s Controller) PostReviews(r *http.Request, w http.ResponseWriter) {
 		http.Error(w, "invalid Json", http.StatusInternalServerError)
 		return
 	}
-	review, _ := utils.ParseJson[Entity.Review](body)
+	review, _ := pkg.ParseJson[Entity.Review](body)
 	s.Service.ReviewService(&review)
 	return
 }
 func (s Controller) GetRestrauntsMenu(r *http.Request, w http.ResponseWriter) {
-	Restaurant, err := utils.ParseJson[Entity.Restaurant](s.request)
+	Restaurant, err := pkg.ParseJson[Entity.Restaurant](s.request)
 	var name string
 	var menu string
 	if err != nil {

@@ -16,7 +16,7 @@ func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (r *Repository) PizzaRepository(pizzas *[]Entity.Pizza) {
+func (r *Repository) PizzaRepository(pizzas Pizza) {
 	result := r.db.Find(pizzas)
 	if result != nil {
 		log.Fatal("result is null")
